@@ -1,0 +1,73 @@
+<p>@@ -0,0 +1,195 @@</p>
+<script>// <![CDATA[
+LZString=function(){function o(o,r){if(!t[o]){t[o]={};for(var n=0;n<o.length;n++)t[o][o.charAt(n)]=n}return t[o][r]}var r=String.fromCharCode,n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",t={},i={compressToBase64:function(o){if(null==o)return"";var r=i._compress(o,6,function(o){return n.charAt(o)});switch(r.length%4){default:case 0:return r;case 1:return r+"===";case 2:return r+"==";case 3:return r+"="}},decompres...(line truncated)...
+	mjsCrypt=function(){function n(r,n){return(r%n+n)%n}function t(r,n){var t=new Uint8Array(r.length+n.length);return t.set(new Uint8Array(r),0),t.set(new Uint8Array(n),r.length),t}function e(r){var n=0;for(i=0;i<r.length;i++)char=r.charCodeAt(i),n=(n<<5)-n+char,n&=n;return n}function o(r){for(var t=u(),e=new Uint8ClampedArray(r),o=0;o<e.length;o++)e[o]=Math.floor(256*Math.random())^t[n(o,t.length)];return e}function a(r){if(null===r||"object"!=typeof r)return" ";var n={};for(var t in r)n[t]=r[t];return n}fun...(line truncated)...
+	function make(){
+		var newKey = document.getElementById('newkey').value;
+		if (newKey.length == 0){
+			alert('no password set');
+			return;
+		}
+		var newTitle = window.btoa(document.getElementById('title').value);
+		var content = document.getElementById('page').value;
+		var s = mjsCrypt.encryptUint8Array(LZString.compressToUint8Array( content ),newKey);
+		var url = 'everythingEncrypted.html'+'#'+s+"#" + newTitle;
+		showURL(url);//window.open( url ); 
+	}
+	
+	function makeplane(){
+		var content = document.getElementById('page').value;
+		var s =LZString.compressToEncodedURIComponent( content );
+		var url = 'everything.html'+'#' + s;
+		showURL(url);
+		//window.open(url ); 
+	}
+	function showURL(url){
+		var link = document.createElement("a");
+		link.href = url;
+		var path = link.protocol+"//"+link.host+link.pathname+link.search+link.hash;
+		var title = document.getElementById('title').value || 'Untitled';
+		
+		var pathlen = path.length;
+		
+		if (pathlen > 9*1024){
+			document.getElementById('lenout').style.color='red';
+		} else{
+			document.getElementById('lenout').style.color='black';	
+		}
+		
+		document.getElementById('lenout').textContent = 'Length: '+(pathlen / 1014).toFixed(2) + 'kB';
+		
+		document.getElementById('hrefout').value = "<a href='"+path+"'> "+title+"</a>";
+		document.getElementById('redditout').value = "[" +title+ "]("+ path+ " )";
+		document.getElementById('plainout').value = path;
+		document.getElementById('linkout').textContent = title;
+		document.getElementById('linkout').href = url;
+		
+	}
+	function preview(){
+		var content = document.getElementById('page').value;
+		document.getElementById('if').src  = 'data:text/html;base64,'+
+						btoa('<!DOCTYPE html><html>'+ document.head.outerHTML + content +'</HTML>');
+	}
+// ]]></script>
+<h1 id="h">Make an encrypted host-free page</h1>
+<p>There is no need to use your own webhost to serve a webpage. You can use this page to generate special URL that loads the page you create. When you have the URL, save it or share it on social media and forums. You can also encrypt it so that only people with the password can view your page.</p>
+<p>Write your page here in HTML (or try a demo):</p>
+<p><button>Basic demo</button> <button>JS+CSS demo</button> <button>Inline Image demo</button> <button>Blog Post</button></p>
+<p>&nbsp;</p>
+<p>You can preview your page: <button> Preview </button></p>
+<p><iframe id="if" width="300" height="150"></iframe></p>
+<p>Set a friendly name <input id="title" type="text" /> It will be visible before decryption.</p>
+<p>Set a password <input id="newkey" type="password" /> The longer the better.</p>
+<p>Make the encrypted page <input type="button" value="OK" /></p>
+<p>Make an unencrypted page <input type="button" value="OK" /></p>
+<p>Here are useable urls. <br /> html &lt;a&gt; tag: <input id="hrefout" type="text" value="" /><br /> forum post: <input id="redditout" type="text" value="" /><br /> plain url: <input id="plainout" type="text" value="" /><br /> link: <a id="linkout"></a><br /> <span id="lenout"></span></p>
+<p>&nbsp;</p>
+<noscript>
+This will not be displayed if JavaScript is enabled - that might be a good thing.
+</noscript>
+<div id="demo-js" style="display: none;">&lt;style&gt; body {padding: 1em; max-width: 40em; margin-left: auto; margin-right: auto;} &lt;/style&gt; &lt;body&gt; &lt;h1&gt;I love you&lt;/h1&gt; &lt;p&gt; we meet in &lt;span id='s'&gt;&lt;/span&gt; days &lt;/p&gt; &lt;script&gt; d = new Date('2016-12-01 12:00:00'); document.getElementById('s').textContent = Math.floor((d.getTime() - Date.now())/1000/3600/24) &lt;/script&gt; &lt;/body&gt;</div>
+<div id="basic-js" style="display: none;">&lt;body&gt; &lt;h1&gt;You are cool&lt;/h1&gt; &lt;p&gt;We should meet&lt;/p&gt; &lt;/body&gt;</div>
+<div id="image-js" style="display: none;">&lt;style&gt; body {padding: 1em; max-width: 40em; margin-left: auto; margin-right: auto;} &lt;/style&gt; &lt;body&gt; &lt;center&gt; &lt;svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"&gt; &lt;path d="M370.672,12.17c-45.701,0-88.394,22.526-114.661,59.024C229.727,34.689,187.03,12.17,141.328,12.17 C63.405,12.17,0,75.564,0,153.5c0,94.381,57.64,144.885,124.387,203.358c38.983,34.15,83.17,72.857,119.654,125.332l12.267,17.641 l11.854-17.924c35.313-53.387,78.523-91.695,120.305-128.734C452.006,296.855,512,243.654,512,153.5 C512,75.564,448.604,12.17,370.672,12.17z M369.142,331.371c-36.929,32.729-78.269,69.373-113.402,117.391 c-35.717-46.873-76.089-82.242-112.148-113.834C79.648,278.918,29.145,2...(line truncated)... &lt;/svg&gt; &lt;p&gt;I love you too&lt;/p&gt; &lt;/center&gt; &lt;/body&gt;</div>
+<div id="blog-js" style="display: none;">&lt;style&gt; html{-webkit-text-size-adjust:100%;padding-bottom:4em} body {margin: 1em;padding: 1em;margin-top:0em;padding-top:0em;margin:auto;max-width:40em} pre {border-left:1px solid black;padding-left:1em;margin-left:1em;} h2 {font-size: small;} input {width:100%} &lt;/style&gt; &lt;body&gt; &lt;p&gt; You can now use encryption on the created pages, to keep things private. &lt;/p&gt; &lt;/body&gt;</div>
